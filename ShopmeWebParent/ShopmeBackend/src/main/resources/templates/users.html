@@ -15,6 +15,12 @@
 	th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
 <script src="https://kit.fontawesome.com/00216f116a.js"
 	crossorigin="anonymous"></script>
+
+<style>
+a {
+	text-decoration: none;
+}
+</style>
 </head>
 <body>
 	<div class="container-fluid">
@@ -85,26 +91,60 @@
 				<tbody>
 					<tr th:each="user : ${listUsers}">
 						<td>[[${user.id}]]</td>
-						<td><i class="fas fa-portrait fa-3x icon-silver"></i></td>
+						<td><span th:if="${user.photos == null}"
+							class="fas fa-portrait fa-3x icon-silver"></span> <img
+							th:if="${user.photos != null}"
+							th:src="@{${user.photosImagePath}}" style="width: 100px" /></td>
 						<td>[[${user.email}]]</td>
 						<td>[[${user.firstName}]]</td>
 						<td>[[${user.lastName}]]</td>
 						<td>[[${user.roles}]]</td>
 						<td><a th:if="${user.enabled == true}"
-							class="fas fa-check-circle fa-2x icon-green" href=""></a> <a
+							class="fas fa-check-circle fa-2x icon-green"
+							th:href="@{'/users/update-status/' + ${user.id} + '/false'}"
+							title="Disable this user"></a> <a
 							th:if="${user.enabled == false}"
-							class="fas fa-check-circle fa-2x icon-dark" href=""></a></td>
+							class="fas fa-circle fa-2x icon-dark"
+							th:href="@{'/users/update-status/' + ${user.id}} + '/true'"
+							title="Enable this user"></a></td>
 						<td><a class="far fa-edit fa-2x icon-green"
 							th:href="@{'/users/edit/' + ${user.id}}" title="Edit this user"></a>
 							&nbsp; <a class="fas fa-trash-alt fa-2x icon-dark"
-							id="link-delete" th:href="@{'/users/delete/' + ${user.id}}" 
-							th:userId="${user.id}"></a>
-						</td>
+							id="link-delete" th:href="@{'/users/delete/' + ${user.id}}"
+							th:userId="${user.id}"></a></td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 
+		<div class="text-center m-1" th:if="${totalItems > 0}">
+			<span>Showing users # [[${startCount}]] to [[${endCount}]] of
+				[[${totalItems}]]</span>
+		</div>
+		<div class="text-center m-1" th:unless="${totalItems > 0}">
+			<span>No user found</span>
+		</div>
+		<div>
+			<nav>
+				<ul class="pagination justify-content-center">
+					<li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}"><a class="page-link"
+						th:href="@{/users/page/1}">First</a></li>
+
+					<li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}"><a class="page-link"
+						th:href="@{'/users/page/' + ${currentPage - 1}}">Previous</a></li>
+					<li th:class="${currentPage != i ? 'page-item' : 'page-item active'}"
+						th:each="i : ${#numbers.sequence(1, totalPages)}"><a
+						class="page-link" th:href="@{'/users/page/' + ${i}}">[[${i}]]</a>
+					</li>
+
+					<li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}"><a class="page-link"
+						th:href="@{'/users/page/' + ${currentPage + 1}}">Next</a></li>
+					<li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}"><a class="page-link"
+						th:href="@{'/users/page/' + ${totalPages}}">Last</a></li>
+
+				</ul>
+			</nav>
+		</div>
 		<div class="text-center">
 			<p>Shopme Control Panel - Copyright &copy; Shopme</p>
 		</div>
