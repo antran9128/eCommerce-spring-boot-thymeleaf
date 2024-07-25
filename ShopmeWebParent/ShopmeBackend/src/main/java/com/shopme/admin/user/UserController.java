@@ -21,6 +21,8 @@ import com.shopme.common.entity.Role;
 import com.shopme.common.entity.User;
 
 import org.springframework.util.StringUtils;
+
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 
 @Controller
@@ -99,8 +101,12 @@ public class UserController {
 		}
 
 		redirectAttributes.addFlashAttribute("message", "The user has been saved successfully.");
+		return getRedirectURLtoAffectedUser(user);
+	}
 
-		return "redirect:/users";
+	private String getRedirectURLtoAffectedUser(User user) {
+		String firstPartOfEmailString = user.getEmail().split("@")[0];
+		return "redirect:/users/page/1?sortField=id&sortDir=asc&keyword=" + firstPartOfEmailString;
 	}
 
 	@GetMapping("/users/edit/{id}")
@@ -143,6 +149,13 @@ public class UserController {
 		redirectAttributes.addFlashAttribute("message", "The user ID " + id + " has been " + enable + ".");
 
 		return "redirect:/users";
+	}
+	
+	@GetMapping("/users/export/csv")
+	public void exportToCSV(HttpServletResponse response) throws IOException {
+		List<User> users = service.listAll();
+		UserCsvExporter userExporterCsv = new UserCsvExporter();
+		userExporterCsv.export(users, response);
 	}
 
 }
