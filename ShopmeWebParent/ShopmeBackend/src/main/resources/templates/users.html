@@ -13,8 +13,7 @@
 <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
 <script type="text/javascript"
 	th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
-<script src="https://kit.fontawesome.com/00216f116a.js"
-	crossorigin="anonymous"></script>
+<script src="https://kit.fontawesome.com/00216f116a.js" crossorigin="anonymous"></script>
 
 <style>
 a {
@@ -70,6 +69,10 @@ a {
 			<a th:href="@{/users/new}">Create New User</a>
 			&nbsp;|&nbsp;
 			<a th:href="@{/users/export/csv}">Export to CSV</a>
+			&nbsp;|&nbsp;
+			<a th:href="@{/users/export/excel}">Export to Excel</a>
+			&nbsp;|&nbsp;
+			<a th:href="@{/users/export/pdf}">Export to PDF</a>
 		</div>
 
 		<div th:if="${message != null}"

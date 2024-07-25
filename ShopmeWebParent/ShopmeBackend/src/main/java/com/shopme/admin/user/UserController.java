@@ -3,8 +3,6 @@ package com.shopme.admin.user;
 import java.io.IOException;
 import java.util.List;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -156,6 +154,20 @@ public class UserController {
 		List<User> users = service.listAll();
 		UserCsvExporter userExporterCsv = new UserCsvExporter();
 		userExporterCsv.export(users, response);
+	}
+	
+	@GetMapping("/users/export/excel")
+	public void exportToExcel(HttpServletResponse response) throws IOException {
+		List<User> users = service.listAll();
+		UserExcelExporter exporter = new UserExcelExporter();
+		exporter.export(users, response);
+	}
+	
+	@GetMapping("/users/export/pdf")
+	public void exportToPDF(HttpServletResponse response) throws IOException {
+		List<User> users = service.listAll();
+		UserPdfExporter exporter = new UserPdfExporter();
+		exporter.export(users, response);
 	}
 
 }
