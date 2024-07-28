@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
-import jakarta.persistence.Entity;
+import javax.persistence.Entity;
 
 @SpringBootApplication
 @EntityScan({"com.shopme.common.entity", "com.shopme.admin.user"})

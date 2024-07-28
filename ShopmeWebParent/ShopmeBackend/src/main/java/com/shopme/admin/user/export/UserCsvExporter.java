@@ -1,4 +1,4 @@
-package com.shopme.admin.user;
+package com.shopme.admin.user.export;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -12,7 +12,7 @@ import org.supercsv.prefs.CsvPreference;
 
 import com.shopme.common.entity.User;
 
-import jakarta.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponse;
 
 public class UserCsvExporter extends AbstractExporter{
 	public void export(List<User> listUsers, HttpServletResponse response) throws IOException {
