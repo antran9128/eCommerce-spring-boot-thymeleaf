@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments :: page_head('Your Account Details', 'none')" />>
+<head th:replace="fragments :: page_head('Your Account Details', 'none')" />
 <body>
 <div class="container-fluid">
 	<div th:replace="navigation :: menu"></div>
@@ -91,7 +91,7 @@
 </div>
 <script type="text/javascript">
 
-	moduleURL = "[[@{/}]]";
+	moduleUrl = "[[@{/}]]";
 
 	function checkPasswordMatch(confirmPassword) {
 		if (confirmPassword.value != $("#password").val()) {
