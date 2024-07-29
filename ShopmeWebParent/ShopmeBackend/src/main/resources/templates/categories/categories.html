@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head
+	th:replace="fragments :: page_head('Categories - Shopme Admin', 'none')" />
+
+<body>
+
+	<div class="container-fluid">
+		<div th:replace="navigation :: menu"></div>
+		<div>
+			<h2>Manage Categories</h2>
+			<a th:href="@{/categories/new}" style="text-decoration: none;"
+				class="fas fa-user-plus fa-2x icon-dark mr-2"></a> <a
+				th:href="@{/categories/export/csv}" style="text-decoration: none;"
+				class="fas fa-file-csv fa-2x icon-dark mr-2"></a> <a
+				th:href="@{/categories/export/excel}" style="text-decoration: none;"
+				class="fas fa-file-excel fa-2x icon-dark mr-2"></a> <a
+				th:href="@{/categories/export/pdf}" style="text-decoration: none;"
+				class="fas fa-file-pdf fa-2x icon-dark mr-2"></a>
+		</div>
+
+		<div th:replace="fragments :: search_form_and_message"></div>
+
+		<div class="full-details">
+			<table
+				class="table table-bordered table-striped table-hover table-responsive-xl">
+				<thead class="thead-dark">
+					<tr>
+
+						<th>ID</th>
+						<th>Category Image</th>
+						<th
+							th:replace="fragments :: column_link('name', 'Category Name', 'none')" />
+						<th class="hideable-column">Alias</th>
+						<th>Enabled</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="item : ${categories}">
+						<td class="hideable-column">[[${item.id}]]</td>
+						<td>
+							<!--/* <img
+							th:if="${item.image != null}"
+							th:src="@{${user.photosImagePath}}" style="width: 100px" />*/-->
+						</td>
+
+						<td class="hideable-column">[[${item.name}]]</td>
+						<td>[[${item.alias}]]</td>
+
+						<td><a th:if="${item.enabled == true}"
+							class="fas fa-check-circle fa-2x icon-green"
+							th:href="@{'/categories/update-status/' + ${item.id} + '/false'}"
+							title="Disable this category"></a> <a
+							th:if="${item.enabled == false}"
+							class="fas fa-circle fa-2x icon-dark"
+							th:href="@{'/categories/update-status/' + ${item.id}} + '/true'"
+							title="Enable this categories"></a></td>
+						<td><a class="far fa-edit fa-2x icon-green"
+							th:href="@{'/categories/edit/' + ${item.id}}"
+							title="Edit this category"></a> &nbsp; <a
+							class="fas fa-trash-alt fa-2x icon-dark" id="link-delete"
+							th:href="@{'/categories/delete/' + ${item.id}}"
+							th:userId="${item.id}"></a></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+</body>
+</html>
