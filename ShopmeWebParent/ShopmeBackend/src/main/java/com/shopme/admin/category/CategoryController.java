@@ -8,6 +8,7 @@ import com.shopme.admin.category.export.*;
 import com.shopme.admin.user.UserNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -29,8 +30,16 @@ public class CategoryController {
 	private CategoryService categoryService;
 	
 	@GetMapping("/categories")
-	public String getAllCategories(Model model) {
-		List<Category> categories = categoryService.listAll();
+	public String getAllCategories(@Param("sortDir") String sortDir, Model model) {
+		if(sortDir == null || sortDir.isEmpty()) {
+			sortDir = "asc";
+		}
+		
+		List<Category> categories = categoryService.listAll(sortDir);
+		
+		String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc";
+		
+		model.addAttribute("reverseSortDir" , reverseSortDir);
 		model.addAttribute("categories", categories);
 		return "categories/categories";
 	}
@@ -81,6 +90,18 @@ public class CategoryController {
 		}
 	}
 	
+	@GetMapping("/categories/{id}/enabled/{status}")
+	public String updateCategoryStatus(@PathVariable(name = "id") Integer id, @PathVariable(name = "status") boolean status,
+			Model model, RedirectAttributes redirectAttributes) {
+		categoryService.updateUserStatus(id, status);
+
+		String enable = status ? "enabled" : "disabled";
+
+		redirectAttributes.addFlashAttribute("message", "The category ID " + id + " has been " + enable + ".");
+
+		return "redirect:/categories";
+	}
+	
 	@GetMapping("/categories/export/csv")
 	public void exportToCSV(HttpServletResponse response) throws IOException {
 		
@@ -95,7 +116,7 @@ public class CategoryController {
 	@GetMapping("/categories/export/excel")
 	public void exportToExcel(HttpServletResponse response) throws IOException {
 		
-		List<Category> listCategories = categoryService.listAll();
+		List<Category> listCategories = categoryService.listAll("asc");
 	
 		CategoryExcelExporter exporter = new CategoryExcelExporter();
 		
@@ -106,11 +127,13 @@ public class CategoryController {
 	@GetMapping("/categories/export/pdf")
 	public void exportToPDF(HttpServletResponse response) throws IOException {
 		
-		List<Category> listCategories = categoryService.listAll();
+		List<Category> listCategories = categoryService.listAll("asc");
 		
 		CategoryPdfExporter exporter = new CategoryPdfExporter();
 				
 		exporter.export(listCategories, response);
 		
 	}
+	
+	
 }

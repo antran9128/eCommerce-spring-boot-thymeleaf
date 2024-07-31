@@ -61,14 +61,9 @@ a {
 						<td>[[${user.firstName}]]</td>
 						<td>[[${user.lastName}]]</td>
 						<td>[[${user.roles}]]</td>
-						<td><a th:if="${user.enabled == true}"
-							class="fas fa-check-circle fa-2x icon-green"
-							th:href="@{'/users/update-status/' + ${user.id} + '/false'}"
-							title="Disable this user"></a> <a
-							th:if="${user.enabled == false}"
-							class="fas fa-circle fa-2x icon-dark"
-							th:href="@{'/users/update-status/' + ${user.id}} + '/true'"
-							title="Enable this user"></a></td>
+						<td>
+							<div th:replace="fragments :: status(${user.enabled}, 'user', '/users/' + ${user.id})" ></div>
+						</td>
 						<td><a class="far fa-edit fa-2x icon-green"
 							th:href="@{'/users/edit/' + ${user.id}}" title="Edit this user"></a>
 							&nbsp; <a class="fas fa-trash-alt fa-2x icon-dark"

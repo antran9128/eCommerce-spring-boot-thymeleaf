@@ -20,11 +20,10 @@
 		</div>
 
 		<div th:replace="fragments :: search_form_and_message"></div>
-		
-		<div th:if="${message != null}" class="alert alert-success text-center">
-			[[${message}]]
-		</div>
-		
+
+		<div th:if="${message != null}"
+			class="alert alert-success text-center">[[${message}]]</div>
+
 		<div class="full-details">
 			<table
 				class="table table-bordered table-striped table-hover table-responsive-xl">
@@ -33,8 +32,11 @@
 
 						<th>ID</th>
 						<th>Category Image</th>
-						<th
-							th:replace="fragments :: column_link('name', 'Category Name', 'none')" />
+						<th><a class="text-white"
+							th:href="@{'/categories?sortDir=' + ${reverseSortDir}}">
+								Category Name <span
+								th:class="${reverseSortDir == 'desc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}"></span>
+						</a></th>
 						<th class="hideable-column">Alias</th>
 						<th>Enabled</th>
 						<th></th>
@@ -43,23 +45,16 @@
 				<tbody>
 					<tr th:each="item : ${categories}">
 						<td class="hideable-column">[[${item.id}]]</td>
-						<td>
-							<img
-							th:if="${item.image != null}"
-							th:src="@{${item.imagePath}}" style="width: 100px" />
-						</td>
+						<td><img th:if="${item.image != null}"
+							th:src="@{${item.imagePath}}" style="width: 100px" /></td>
 
 						<td class="hideable-column">[[${item.name}]]</td>
 						<td>[[${item.alias}]]</td>
 
-						<td><a th:if="${item.enabled == true}"
-							class="fas fa-check-circle fa-2x icon-green"
-							th:href="@{'/categories/update-status/' + ${item.id} + '/false'}"
-							title="Disable this category"></a> <a
-							th:if="${item.enabled == false}"
-							class="fas fa-circle fa-2x icon-dark"
-							th:href="@{'/categories/update-status/' + ${item.id}} + '/true'"
-							title="Enable this categories"></a></td>
+						<td>
+							<div
+								th:replace="fragments :: status(${item.enabled}, 'category', '/categories/' + ${item.id})"></div>
+						</td>
 						<td><a class="far fa-edit fa-2x icon-green"
 							th:href="@{'/categories/edit/' + ${item.id}}"
 							title="Edit this category"></a> &nbsp; <a
