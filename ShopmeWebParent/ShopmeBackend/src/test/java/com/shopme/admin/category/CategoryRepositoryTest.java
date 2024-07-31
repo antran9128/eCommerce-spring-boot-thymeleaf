@@ -12,7 +12,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
-
+import org.springframework.data.domain.Sort;
 import com.shopme.common.entity.Category;
 
 @DataJpaTest
@@ -95,5 +95,29 @@ public class CategoryRepositoryTest {
 
 			printChildren(subCategory, newSubLevel);
 		}		
+	}
+	
+	@Test
+	public void testListRootCategories() {
+		List<Category> rootCategories = repo.listRootCategories();
+		rootCategories.forEach(cat -> System.out.println(cat.getName()));
+	}
+	
+	@Test
+	public void testFindByName() {
+		String name = "Computers"; // Computers1
+		Category category = repo.findByName(name);
+
+		assertThat(category).isNotNull();
+		assertThat(category.getName()).isEqualTo(name);
+	}
+	
+	@Test
+	public void testFindByAlias() {
+		String alias = "Electronics";
+		Category category = repo.findByAlias(alias);
+
+		assertThat(category).isNotNull();
+		assertThat(category.getAlias()).isEqualTo(alias);
 	}
 }

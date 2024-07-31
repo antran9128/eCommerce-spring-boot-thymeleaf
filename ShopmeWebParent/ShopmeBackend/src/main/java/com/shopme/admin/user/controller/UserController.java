@@ -83,9 +83,6 @@ public class UserController {
 	@PostMapping("/users/save")
 	public String saveUser(User user, RedirectAttributes redirectAttributes,
 			@RequestParam("image") MultipartFile multipartFile) throws IOException {
-		System.out.println(user);
-		service.save(user);
-
 		if (!multipartFile.isEmpty()) {
 			String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
 
@@ -96,11 +93,7 @@ public class UserController {
 			FileUploadUtil.cleanDir(uploadDir);
 			FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
 		} else {
-
-			if (user.getPhotos().isEmpty())
-				user.setPhotos(null);
 			service.save(user);
-
 		}
 
 		redirectAttributes.addFlashAttribute("message", "The user has been saved successfully.");
@@ -121,10 +114,10 @@ public class UserController {
 			model.addAttribute("user", user);
 			model.addAttribute("pageTitle", "Edit User (ID: " + id + ")");
 			model.addAttribute("listRoles", listRoles);
-			return "user_form";
+			return "users/user_form";
 		} catch (UserNotFoundException e) {
 			redirectAttributes.addFlashAttribute("message", e.getMessage());
-			return "redirect:users/users";
+			return "redirect:/users";
 		}
 
 	}

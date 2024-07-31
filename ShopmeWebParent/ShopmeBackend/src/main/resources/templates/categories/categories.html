@@ -20,7 +20,11 @@
 		</div>
 
 		<div th:replace="fragments :: search_form_and_message"></div>
-
+		
+		<div th:if="${message != null}" class="alert alert-success text-center">
+			[[${message}]]
+		</div>
+		
 		<div class="full-details">
 			<table
 				class="table table-bordered table-striped table-hover table-responsive-xl">
@@ -40,9 +44,9 @@
 					<tr th:each="item : ${categories}">
 						<td class="hideable-column">[[${item.id}]]</td>
 						<td>
-							<!--/* <img
+							<img
 							th:if="${item.image != null}"
-							th:src="@{${user.photosImagePath}}" style="width: 100px" />*/-->
+							th:src="@{${item.imagePath}}" style="width: 100px" />
 						</td>
 
 						<td class="hideable-column">[[${item.name}]]</td>
