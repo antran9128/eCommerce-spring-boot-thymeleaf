@@ -15,13 +15,14 @@
 </head>
 <body>
 	<th th:fragment="column_link(fieldName, columnLabel, removeTag)" th:remove="${removeTag}">
+	
 		<a class="text-white"
-			th:href="@{'/users/page/' + ${currentPage} + '?sortField=' + ${fieldName} + '&sortDir=' + ${sortField != fieldName ? sortDir : reverseSortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">
+			th:href="@{${moduleURL} + '/page/' + ${currentPage} + '?sortField=' + ${fieldName}  +'&sortDir=' + ${sortField != fieldName ? sortDir : reverseSortDir} + ${keyword != null ? '&keyword=' + keyword : ''} + ${categoryId != null ? '&categoryId=' + categoryId : ''}}">
 			[[${columnLabel}]]
-		</a>
+		</a>								
 		<span th:if="${sortField == fieldName}"
-			th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}">
-		</span>
+			th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}" ></span>	
+							
 	</th>
 	
 	<!-- PAGE LINK -->
@@ -145,9 +146,5 @@
 		<p>Shopme Control Panel - Copyright &copy; Shopme</p>
 	</div> 
 	<!-- FOOTER END--> 
-	
-	
-
-
 </body>
 </html>

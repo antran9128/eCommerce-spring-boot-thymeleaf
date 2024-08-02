@@ -32,11 +32,7 @@
 
 						<th>ID</th>
 						<th>Category Image</th>
-						<th><a class="text-white"
-							th:href="@{'/categories/page/' + ${pageNum} + '?sortDir=' + ${reverseSortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">
-								Category Name <span
-								th:class="${reverseSortDir == 'desc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}"></span>
-						</a></th>
+						<th th:replace="fragments :: column_link('name', 'Category Name', 'none')" />
 						<th class="hideable-column">Alias</th>
 						<th>Enabled</th>
 						<th></th>
@@ -65,6 +61,26 @@
 				</tbody>
 			</table>
 		</div>
+		
+		<div class="less-details">
+		<div th:each="cat : ${listCategories}" class="row m-1">
+			<div class="col-4">
+				<img th:src="@{${cat.imagePath}}" style="width: 100px" class="img-fluid"/>			
+			</div>
+			<div class="col-8">
+				<div>[[${cat.name}]]</div>
+				<div class="mt-2">
+					<div th:replace="fragments :: status(${cat.enabled}, 'category', '/categories/' + ${cat.id})"></div>
+					&nbsp; 			
+					<div th:replace="fragments :: edit('category', '/categories/edit/' + ${cat.id})"></div>
+					&nbsp;
+					<div th:replace="fragments :: delete('category', ${cat.id}, '/categories/delete/' + ${cat.id}, ${!cat.hasChildren})"></div>
+				</div>
+			</div>
+			<div>&nbsp;</div>
+		</div>	
+	</div>
+		
 		<div th:if="${keyword != null}" class="text-center">
 			<span>Search result does not show categories in hierarchical form</span>
 			<div
