@@ -44,7 +44,13 @@ public class UserController {
 	public String listByPage(@PathVariable(name = "pageNum") int pageNum, Model model, @Param("sortField") String sortField, @Param("sortDir") String sortDir, @Param("keyword") String keyword) {
 		Page<User> page = service.listByPage(pageNum, sortField, sortDir, keyword);
 		List<User> listUsers = page.getContent();
-		
+		System.out.println(sortField);
+		System.out.println(sortDir);
+		System.out.println(keyword);
+		for (User user : listUsers) {
+			System.out.println(user.getFirstName());
+		}
+				
 		long startCount = (pageNum - 1) * UserService.USERS_PER_PAGE + 1;
 		long endCount = startCount + UserService.USERS_PER_PAGE - 1;
 		String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc";
@@ -61,6 +67,7 @@ public class UserController {
 		model.addAttribute("sortDir", sortDir);
 		model.addAttribute("reverseSortDir", reverseSortDir);
 		model.addAttribute("keyword", keyword);
+		model.addAttribute("moduleURL", "/users");
 		
 		return "users/users";
 	}

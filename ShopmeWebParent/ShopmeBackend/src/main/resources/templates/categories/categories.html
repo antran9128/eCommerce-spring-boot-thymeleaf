@@ -19,7 +19,7 @@
 				class="fas fa-file-pdf fa-2x icon-dark mr-2"></a>
 		</div>
 
-		<div th:replace="fragments :: search_form_and_message"></div>
+		<div th:replace="fragments :: search_form_and_message()"></div>
 
 		<div th:if="${message != null}"
 			class="alert alert-success text-center">[[${message}]]</div>
@@ -33,7 +33,7 @@
 						<th>ID</th>
 						<th>Category Image</th>
 						<th><a class="text-white"
-							th:href="@{'/categories?sortDir=' + ${reverseSortDir}}">
+							th:href="@{'/categories/page/' + ${pageNum} + '?sortDir=' + ${reverseSortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">
 								Category Name <span
 								th:class="${reverseSortDir == 'desc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}"></span>
 						</a></th>
@@ -43,7 +43,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr th:each="item : ${categories}">
+					<tr th:each="item : ${listCategories}">
 						<td class="hideable-column">[[${item.id}]]</td>
 						<td><img th:if="${item.image != null}"
 							th:src="@{${item.imagePath}}" style="width: 100px" /></td>
@@ -55,17 +55,37 @@
 							<div
 								th:replace="fragments :: status(${item.enabled}, 'category', '/categories/' + ${item.id})"></div>
 						</td>
-						<td><a class="far fa-edit fa-2x icon-green"
-							th:href="@{'/categories/edit/' + ${item.id}}"
-							title="Edit this category"></a> &nbsp; <a
-							class="fas fa-trash-alt fa-2x icon-dark" id="link-delete"
-							th:href="@{'/categories/delete/' + ${item.id}}"
-							th:userId="${item.id}"></a></td>
+						<td><div
+								th:replace="fragments :: edit('category', '/categories/edit/' + ${item.id})"></div>
+							&nbsp;
+							<div
+								th:replace="fragments :: delete('category', ${item.id}, '/categories/delete/' + ${item.id}, ${!item.hasChildren})"></div>
+						</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
+		<div th:if="${keyword != null}" class="text-center">
+			<span>Search result does not show categories in hierarchical form</span>
+			<div
+				th:replace="fragments :: pagination('/categories', 'categories')"></div>
+		</div>
+
+		<div th:unless="${keyword != null}">
+			<div
+				th:replace="fragments :: pagination('/categories', 'top-level categories')"></div>
+		</div>
+
+		<div th:replace="modal_fragments :: confirm_modal"></div>
+
+		<div th:replace="fragments :: footer"></div>
 	</div>
 
 </body>
+<script th:src="@{/js/common_list.js}"></script>
+<script type="text/javascript">
+	moduleURL = "[[@{/categories}]]";
+
+	entityName = "category";
+</script>
 </html>
