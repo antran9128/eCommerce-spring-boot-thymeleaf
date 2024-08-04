@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: page_head('Products - Shopme Admin', 'none')" />
+<body>
+<div class="container-fluid">
+	<div th:replace="navigation :: menu"></div>
+	<div>
+		<h2>Manage Products</h2>	
+		
+		<a th:href="@{/products/new}" style="text-decoration: none;" class="fas fa-folder-plus fa-2x icon-dark mr-2"></a>
+
+		<a th:href="@{/products/export/csv}" style="text-decoration: none;" class="fas fa-file-csv fa-2x icon-dark mr-2"></a>
+
+		<a th:href="@{/products/export/excel}" style="text-decoration: none;" class="fas fa-file-excel fa-2x icon-dark mr-2"></a>		
+
+		<a th:href="@{/products/export/pdf}" style="text-decoration: none;" class="fas fa-file-pdf fa-2x icon-dark"></a>	
+
+	</div>
+
+	<div th:replace="fragments :: search_form_and_message"></div>
+
+	<div class="full-details">
+		<table class="table table-bordered table-striped table-hover table-responsive-xl">
+			<thead class="thead-dark">
+				<tr>
+					<th class="hideable-column">ID</th>
+					<th>Main Image</th>
+					<th th:replace="fragments :: column_link('name', 'Product Name', 'none')" />
+					<th>Brand</th>
+					<th>Category</th>
+					<th>Enabled</th>
+					<th></th>
+				</tr>								
+			</thead>
+			<tbody>
+				<tr th:each="product : ${listProducts}">
+					<td class="hideable-column">[[${product.id}]]</td>
+					<td>
+						<!-- <img th:src="@{${brand.logoPath}}" style="width: 100px" class="img-fluid"/> -->
+					</td>
+					<td>[[${product.name}]]</td>					
+					<td>[[${product.brand.name}]]</td>
+					<td>[[${product.category.name}]]</td>				
+					<td>
+						<div
+							th:replace="fragments :: status(${product.enabled}, 'product', '/products/' + ${product.id})"></div>
+						&nbsp;
+					</td>
+					<td>
+						<a class="fas fa-file-alt fa-2x icon-green link-detail"
+							th:href="@{'/products/detail/' + ${product.id}}"
+							title="View details of this product"
+							></a>
+						&nbsp;
+						<div th:replace="fragments :: edit('product', '/products/edit/' + ${product.id})"></div>
+						&nbsp; 
+						<div th:replace="fragments :: delete('product', ${product.id}, '/products/delete/' + ${product.id}, true)"></div>						
+					</td>					
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+</div>
+<script th:src="@{/js/common_list.js}"></script>
+<script type="text/javascript">
+	moduleURL = "[[@{/products}]]";
+
+	entityName = "product";
+</script>
+</body>
+</html> 
