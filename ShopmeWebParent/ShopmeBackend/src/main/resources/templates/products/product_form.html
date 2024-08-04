@@ -45,7 +45,7 @@
 		  	<div th:replace="products/product_description :: content"></div>
 		  </div>
 		  <div class="tab-pane active p-3" id="images" role="tabpanel">
-		  	images
+		  	<div th:replace="products/product_images :: content"></div>
 		  </div>	
 		  <div class="tab-pane active p-3" id="details" role="tabpanel">
 		  	details
@@ -61,7 +61,7 @@
 	</div>
 	</form>
 
-	<div th:replace="modal_fragments :: modal_dialog"></div>
+	<div th:replace="modal_fragments :: confirm_modal"></div>
 
 	<div th:replace="fragments :: footer"></div>
 

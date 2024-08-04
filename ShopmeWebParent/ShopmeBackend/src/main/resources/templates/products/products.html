@@ -36,7 +36,7 @@
 				<tr th:each="product : ${listProducts}">
 					<td class="hideable-column">[[${product.id}]]</td>
 					<td>
-						<!-- <img th:src="@{${brand.logoPath}}" style="width: 100px" class="img-fluid"/> -->
+						<img th:src="@{${product.mainImagePath}}" style="width: 100px" class="img-fluid"/>
 					</td>
 					<td>[[${product.name}]]</td>					
 					<td>[[${product.brand.name}]]</td>
@@ -61,8 +61,12 @@
 		</table>
 	</div>
 	
+	<div th:replace="modal_fragments :: confirm_modal" ></div>
+	<div th:replace="fragments :: footer"></div>
+	
 </div>
 <script th:src="@{/js/common_list.js}"></script>
+<script th:src="@{/js/common.js}"></script>
 <script type="text/javascript">
 	moduleURL = "[[@{/products}]]";
 

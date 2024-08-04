@@ -1,7 +1,10 @@
 package com.shopme.common.entity;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,7 +12,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -62,8 +67,8 @@ public class Product {
 //	private int reviewCount;
 //	private float averageRating;
 //	
-//	@Column(name = "main_image", nullable = false)
-//	private String mainImage;
+	@Column(name = "main_image", nullable = false)
+	private String mainImage;
 
 	@ManyToOne
 	@JoinColumn(name = "category_id")
@@ -73,9 +78,38 @@ public class Product {
 	@JoinColumn(name = "brand_id")	
 	private Brand brand;
 	
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+	Set<ProductImage> images = new HashSet<>();
+	
 	public Product() {
 		super();
 	}
+	
+	public void addExtraImage(String imageName) {
+		this.images.add(new ProductImage(imageName, this));
+	}
+	
+	
+	
+	public Set<ProductImage> getImages() {
+		return images;
+	}
+
+	public void setImages(Set<ProductImage> images) {
+		this.images = images;
+	}
+
+	public String getMainImage() {
+		return mainImage;
+	}
+
+
+
+	public void setMainImage(String mainImage) {
+		this.mainImage = mainImage;
+	}
+
+
 
 	public Integer getId() {
 		return id;
@@ -221,5 +255,10 @@ public class Product {
 		this.brand = brand;
 	}
 	
-	
+	@Transient
+	public String getMainImagePath() {
+		if (id == null || mainImage == null) return "/images/image-thumbnail.png";
+
+		return "/product-images/" + this.id + "/" + this.mainImage;
+	}
 }

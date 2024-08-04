@@ -4,11 +4,14 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.support.Repositories;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.shopme.common.entity.Product;
 
 @Service
+@Transactional
 public class ProductService {
 	@Autowired
 	private ProductRepository repo;
@@ -46,5 +49,19 @@ public class ProductService {
 			}
 		}		
 		return "OK";
+	}
+	
+	public void updateProductEnabledStatus(Integer id, boolean enabled) {
+		repo.updateEnabledStatus(id, enabled);
+	}
+	
+	public void delete(Integer id) throws ProductNotFoundException {
+		Long countById = repo.countById(id);
+		
+		if(countById == null || countById == 0) {
+			throw new ProductNotFoundException("Could not find any product with ID " + id);
+		}
+		
+		repo.deleteById(id);
 	}
 }
